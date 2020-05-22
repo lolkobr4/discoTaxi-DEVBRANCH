@@ -1,0 +1,530 @@
+uScript (Public Beta v0.9.0) Documentation 
+================================
+
+--------------------------------
+Upcoming Features/Changes:
+--------------------------------
+- Add more example scripts bundled with documentation.
+- Fix support for Advanced Regions.
+- A website for documentation!
+- Filtering for barricades/structures on the server.
+
+--------------------------------
+Changelog (v0.9.0):
+--------------------------------
+- Commands and most events are now asynchronous. This means you no longer have to worry about a performance-heavy script lagging your server.
+The only events that do not have this feature are ones that have setable variables (indicated by a # in documentation).
+
+- Added onConsume and onAid events.
+- Added onTreeChopped and onRockMined events.
+- Added getData() and setData() functions to player type. This data is stored per player session.
+- Added getItemType() and spawnItem() functions to itemManager global type.
+- Added seconds property to datetime type. Note the difference between this and the second property.
+- Added remove() function to clothing subtype of player type.
+- Fixed clear() function in clothing subtype of player type. 
+
+--------------------------------
+Commands:
+--------------------------------
+**Note: Including .uscript in the file name is optional.
+- /script load <file name>
+- /script reload [file name]
+- /script unload [file name]
+--------------------------------
+
+Statements:
+--------------------------------
+- iteration:
+    - foreach-in
+    - while
+- selection:
+    - if
+    - if-else
+    - if-elseif
+    - if-elseif-else
+        
+--------------------------------        
+Operators:
+--------------------------------
+- add
+    - <object> + <object>
+-subtract
+    - <object> - <object>
+- multiply
+    - <object> * <object>
+- divide
+    - <object> / <object>
+- remainder
+    - <object> % <object>
+        
+--------------------------------        
+Comparisons:
+--------------------------------
+- is equals to:
+    - <object> == <object>
+- is not equals to:
+    - <object> != <object>
+- greater than:
+    - <object> > <object>
+- less than:
+    - <object> < <object>
+- greater than or equal:
+    - <object> >= <object>
+- less than or equal:
+    - <object> <= <object>
+    
+--------------------------------        
+Keywords:
+--------------------------------
+- logical:
+    - and
+    - or
+- jump:
+    - break
+    - continue
+    - return
+- modifier:
+    - command
+    - event
+    - function
+- literal:
+    - false
+    - true
+    - null
+    
+--------------------------------        
+Functions:
+--------------------------------
+- conversions: 
+    - toInt(<object>)       [number]    **Note: If it fails, it returns as 0
+    - toNumber(<object>)    [number]    **Note: If it fails, it returns as 0
+    - toPlayer(<object>)    [player]    **Note: If it fails it returns as null.
+    - toString(<object>)    [string]
+    
+- logical:
+    - isPlayer(<object>)    [boolean]
+    - isBarricade(<object>  [boolean]
+    - isInt(<object>)       [boolean]
+    - isStructure(<object>  [boolean]
+    - isSet(<object>)       [boolean]
+    - isVehicle(<object>    [boolean]
+    
+- other-returnable
+    - array([object], [object], ...)    **Note You can get the first index by doing myArray[0]
+    - ban(<steam64ID>, [text], [duration])  [boolean]
+    - unban(<steam64ID>)                    [boolean]
+    - vector3(<x>, <y>, <z>)                [vector3]
+
+- non-returnable:
+    - broadcast(<text>, [color], [image_url])
+    
+--------------------------------    
+Events:
+--------------------------------
+**Note: Parameters can be renamed to anything, but will be set in the same order.
+**Note: Anything indicated by a # is setable. You DO NOT need to have a # in your parameter names, this is merely an indicator for documentation. 
+
+- onAccuracyUpdated(player)
+    - **Note: Only applies when shooting another player (I think).
+- onAid(player, target, id)                         *NEW*
+    - **Note: This only applies when a player aids another player. For self-aid use onConsume and check type for MEDICAL.
+- onAdvancedRegionCreated(region)                   *BROKEN*
+- onAdvancedRegionPlayerEnter(region, player)       *BROKEN*
+- onAdvancedRegionPlayerLeave(region, player)       *BROKEN*
+- onAnimalKilled(player)
+- onArenaWin(player)
+- onBuildBarricade(player, id, position, #cancel)
+- onBuildStructure(player, id, position, #cancel)
+- onClothingUpdated(player, item, slot)
+- onConsume(player, item, type)                     *NEW*
+- onDestroyBarricade(player, barricade, #damage, #cancel)
+- onDestroyStructure(player, structure, #damage, #cancel)
+- onEffectButtonClicked(player, key)
+- onFishCaught(player)
+- onHeadShot(player)
+    - **Note: Only applies to player headshots (I think).
+- onInterval(seconds)
+    - **Note: This is the only event where you set the argument. E.g. onInterval(5) will execute its code every 5 seconds.
+- onLoad()
+- onMegaZombieKilled(player)
+- onPlantHarvested(player)
+- onPlayerChatted(player, message, chatMode, #color, #cancel)
+- onPlayerCommand(player, command, #cancel)
+- onPlayerCrafted(player, itemId, #cancel)
+- onPlayerDamaged(victim, attacker, #cancel, #damage, cause, limb)
+- onPlayerDeath(player, cause, murdererId)
+- onPlayerEnterVehicle(player, vehicle, #cancel)
+- onPlayerEquipped(player, item, #cancel)
+- onPlayerGestured(player, gesture)
+- onPlayerInventoryAdded(player, item)
+- onPlayerInventoryRemoved(player, item)
+- onPlayerJoined(player)
+- onPlayerLeaveVehicle(player, vehicle, #cancel)
+- onPlayerQuit(player)
+- onPlayerRespawned(player, position)
+- onRockMined(player)                               *NEW*
+- onTreeChopped(player)                             *NEW*
+- onUnload()
+- onZombieKilled(player)
+- More to be added soon!
+
+--------------------------------    
+Types:
+--------------------------------
+- animalManager: 
+    functions:
+	- spawnAnimal(<id>, <vector3>)  Note: Currently there are 7 animal types. Input (1 through 7) in the number var, animal list will be showcased in the uScript Discord. 
+
+- array (extends from any ArrayType object):
+    properties:
+        - count        [number]
+    functions:
+        - add(<object>)
+        - contains(<object>)            [boolean]
+        - indexOf(<object>)             [number]
+        - pop()
+        - range(<start>, <count>)       [array]
+        - remove(<object>)
+        - removeAt(<number>)
+        - skip(<number>)                [array]
+            - **Note: Number is the count. If it is 2 it will skip the first 2 elements in an array.
+
+- barricade:
+    properties:
+        - id        [get]       [number]
+        - group     [get/set]   [string]
+        - name      [get]       [string]
+        - owner     [get/set]   [string]
+        - position  [get/set]   [string]
+    functions:
+        - destroy()
+        - getDoor()             [door]
+        - getSign()             [sign]
+        - getStorage()          [storage]
+        - hasDoor()             [boolean]
+        - hasSign()             [boolean]
+        - hasStorage()          [boolean]
+        
+- database
+    functions:
+        - escape(<text>)
+        - execute(<mysql command>)    [2d array or an empty array if no rows]
+
+- door:
+    properties:
+        - isOpen    [get]   [boolean]
+    functions:
+        - close()
+        - open()
+        - toggle()
+        
+- datetime:
+    properties:
+        - date      [get]   [string]
+        - hour      [get]   [number]
+        - minute    [get]   [number]
+        - second    [get]   [number]
+        - seconds   [get]   [number]
+            - **Note: Use this instead of ticks if you only want second precision.
+        - string    [get]   [string]
+            - **Note: The string is formated as yyyy-MM-dd HH:mm:ss
+        - ticks     [get]   [number]
+            - **Note: Use ticks to compare datetimes (10 million ticks in a second)
+        - time      [get]   [string]
+            
+- discord:
+    functions:
+        send(<content>, <webhook_url>, [username], [avatar_url])
+
+- dt:
+    properties:
+        - now    [get]   [datetime]
+    functions:
+        - new(<year>, <month>, <day>, [hour], [minute], [second])   [datetime]
+
+- effectManager:	
+    functions:
+    - sendEffect(<effectId>, <steamId>, <vector3>)
+	- sendUI(<effectId>, <key>, <steamId>, <arg_0>, [arg_1], [arg_2], [arg_3])
+            IMPORTANT: Takes up to 4 arguments.
+	- clearUIbyID(<effectId>, <steamId>)			    
+    
+- file:
+    functions:
+        - read(<file name>)                [string]
+        - write(<file name>, <string>)
+        - writeAll(<file name>, <string>)
+        - writeLine(<file name>, <string>)
+        - **Note: file name MUST include EXTENSION (e.g. "myFile.json")
+
+- inventory:
+    properties:
+        - items     [get]       [array of items]        
+    functions:
+        - addItem(<number>)     [boolean]
+        - hasItem(<number>)     [boolean]
+        - removeItem(<number>)  [boolean]
+        
+- item:
+    properties:
+        - id        [number]
+        - name      [string]
+        
+- itemManager
+    functions:
+        - getItemName(<id>)                         [string]
+        - getItemType(<id>)                         [string]        *NEW*
+        - spawnItem(<id>, <vector3>, [amount])                      *NEW*
+
+- json:
+    functions:
+        - decode(<string>)      [array]
+        - encode(<array>)       [string]
+        
+- logger
+    functions:
+        - log(<text>)
+        - warn(<text>)        *DISABLED*
+        - error(<text>)       *DISABLED*
+
+- math:
+    functions:
+        - abs(<number>)         [number]
+        - ceil(<number>)        [number]
+        - floor(<number>)       [number]
+        
+- player:
+        properties:
+            - arrested      [get]        [boolean]
+            - balance       [get]        [number]           [UCONOMY]
+            - bleeding      [get/set]    [boolean]
+            - broken        [get/set]    [boolean]
+            - experience    [get/set]    [number]
+            - food          [get/set]    [number (0-100)]
+            - god           [get/set]    [boolean]
+            - gravity       [get/set]    [number]
+            - groups        [get]        [array of rocketGroups]
+            - health        [get/set]    [number (0-100)]
+            - hwid          [get]        [string]
+            - inVehicle     [get]        [boolean]
+            - id            [get]        [string]
+            - ip            [get]        [string]
+            - isAdmin       [get/set]    [boolean]
+            - jumpHeight    [get/set]    [number]
+            - marker        [get]        [vector3]
+            - name          [get/set]    [string]
+            - ping          [get]        [number]
+            - position      [get]        [vector3]
+            - radioFrequency[get/set]    [number]         
+            - reputation    [get/set]    [number]
+            - rotation      [get]        [number]
+            - speed         [get/set]    [number]
+            - stance        [get/set]    [string]
+            - steam         [get]        [steam]
+            - steamGroup    [get/set]    [string]
+            - vanish        [get/set]    [boolean]
+            - virus         [get/set]    [number (0-100)]
+            - water         [get/set]    [number (0-100)]
+        functions:
+            - addGroup(<text>)
+            - arrest()
+            - ban([text], [duration])
+            - decreaseBalance(<amount>)                    [UCONOMY]
+            - browserRequest(<text>, <url>)
+            - damage(<amount>)
+            - getBedPosition()                [vector3]
+            - getData(<key>)                  [object]      *NEW*
+                - **Note: key is any string
+            - getFlag(<id>)                   [number]
+            - getNearestLocation()            [string]
+            - give(<itemId>, [amount])
+            - hasBed()                        [boolean]
+            - hasGroup(<text>)                [boolean]
+            - hasPermission(<text>)           [boolean]
+            - heal()
+            - increaseBalance(<amount>)                    [UCONOMY]
+            - kick([text])
+            - kill()
+            - maxSkills()
+            - message(<text>, [color], [image_url])
+            - release()
+            - removeFromVehicle()
+            - removeGroup(<text>)
+            - removeMarker()
+            - setData(<key>, <value>)                       *NEW*
+                - **Note: key is any string and value is any object.
+            - setFlag(<id>, <value>)
+            - setMarker(<vector3>, [text])
+            - sudo(<command>)
+            - teleport(<vector3>)
+        subtypes:
+            clothing:
+                properties:
+                    - backpack      [get]   [item]
+                    - glasses       [get]   [item]
+                    - hat           [get]   [item]
+                    - mask          [get]   [item]
+                    - pants         [get]   [item]
+                    - shirt         [get]   [item]
+                    - vest          [get]   [item]
+                functions:
+                    - clear()
+                    - remove()      *NEW*
+                        - **Note: remove function places the clothing in the inventory.
+            equipment:
+                properties:
+                    - item          [get]    [item]
+                functions:
+                    - dequip()
+            inventory:
+                **Note: This is not to be confused with the global inventory type. This is strictly for the player.
+                properties:
+                    - isStoring     [get]   [boolean]
+                    - items         [get]   [array of items]
+                functions:
+                    - addItem(<itemId>, [amount])
+                    - clear()
+                    - hasItem(<itemId>)
+                    - removeItem(<itemId>, [amount])
+            look:
+                functions:
+                    - getPlayer()       [player]
+                    - getPoint()        [vector3]
+                    - getBarricade()    [barricade]
+                    - getStructure()    [structure]
+                    - getVehicle()      [vehicle]
+            movement:
+                properties:
+                    - isMoving      [get]   [boolean]
+            steam:
+                properties:
+                    - avatarUrl     [get]   [string]
+                    - created       [get]   [datetime]
+                    - name          [get]   [string]
+                    - url           [get]   [string]
+ 
+- random
+    functions:
+        - int(<int>, <int>)    [number]
+        **Note: Generates a random integer between the two integer arguments.
+        **IMPORTANT: Random number includes lower bound but not upper bound. If you want a random number that is 0 or 1, use random.int(0, 2).
+
+- region:
+    properties:
+        - name          [get/set]   [string]
+        
+- rocketGroup:
+    properties:
+        - displayName   [get]   [string]
+        - id            [get]   [string]
+        - prefix        [get]   [string]
+        - suffix        [get]   [string]
+        
+- server
+    properties:
+        - ip            [get]       [string]
+        - isRaining     [get]       [boolean]
+        - isSnowing     [get]       [boolean]
+        - name          [get/set]   [string]
+        - players       [get]       [array]
+        - port          [get]       [string]
+        - isDay		    [get]       [boolean]		
+        - isNight	    [get]       [boolean]
+        - isFullMoon	[get]       [boolean]
+        - time		    [get/set]   [number]
+    functions:
+        - clearAllKeyValues()
+        - execute(<command>)
+        - log(<text>)
+        - setDescription(<string>)
+        - setBotPlayerCount(<number>)
+        - setGameData(<string>)
+        - setKeyValue(<string_key>, <string_value>)
+        - setMapName(<string>)
+        - setName(<string>)
+        
+- sign:
+    properties:
+        - text    [get/set]     [text]
+ 
+- storage:
+    properties:
+        - isOpen    [get]       [boolean]
+        - inventory [get]       [inventory]
+    functions:
+        - addItem(<number>)     [boolean]
+        - hasItem(<number>)     [boolean]
+        - open(<player>)
+        - removeItem(<number>)  [boolean]
+        
+- str:
+    functions:
+        - format(<text>, [text], [text], ...)   [string]
+            **Note: First value is what you are formatting, e.g. "Hello {0}", where the following parameter would replace {0}
+        - join(<text>, <object>)                [string]
+            **Note: First value is separator, second is a string array.
+        - removeRich(<text>)                    [string]
+            **Note: Useful for removing rich text from signs or a message.
+            
+- string (extends from any StringType object [e.g. player.name] )
+    properties:
+        - length                    [number]
+    functions:
+        - contains(<text>)          [boolean]
+        - replace(<text>, <text>)   [string]
+        - split(<char>)             [array]
+        - startsWith(<text>)        [string]
+        - toCharArray()             [array of each character as a string]
+        - toLower()                 [string]
+        - toUpper()                 [string]
+
+- structure:
+    properties:
+        - id        [get]       [number]
+        - group     [get/set]   [string]
+        - name      [get]       [string]
+        - owner     [get/set]   [string]
+        - position  [get/set]   [string]
+    functions:
+        - destroy()
+
+- wait: (You cannot return a value from these functions yet)
+    functions:
+        - minutes(<number>, <function>)
+        - seconds(<number>, <function>)
+            **Example Usage: wait.seconds(5, broadcast("Hello World!"));
+
+- v3:
+    functions:
+        - distance(<vector3>, <vector3>)    [number]
+        
+- vector3: (extends from any Vector3Type object [e.g. player.position] )
+    properties:
+        - position      [get/set]    [vector3]
+        - x             [get/set]    [number]
+        - y             [get/set]    [number]
+        - z             [get/set]    [number]
+        
+- vehicle:
+    properties:
+        - driver    [get]       [player]
+        - id        [get]       [number]
+        - fuel      [get/set]   [number]
+        - group     [get/set]   [string]
+        - health    [get/set]   [number]
+        - inventory [get]       [inventory]
+        - isDriven  [get]       [boolean]
+        - locked    [get/set]   [boolean]
+        - name      [get]       [string]
+        - owner     [get/set]   [string]
+        - position  [get]       [string]   
+    functions:
+        - destroy()
+        - explode()        
+		- popTires()
+- vehicleManager:
+    properties:
+        - vehicles      [get]       [array of vehicles]
+    functions:
+        - spawnVehicle(<id>, <vector3>, <rotation>);
+            **Note: rotation should be a number between 0-360.
