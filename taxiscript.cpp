@@ -15,8 +15,17 @@ command acceptOrder(requestID) {
 
 				if (requestaccepted == 0) {
 					logger.log("acceptOrder - requestaccepted returned 'False'");
+
 					database.execute("UPDATE taxiRequest SET accepted='1' WHERE id = '" + requestID + "';");
+
 					player.message(str.format("<color=cyan>You have accepted {0}'s order!</color>", requestName));
+					player.setMarker(vector3(requestLocation));
+
+					foreach(x in server.players) {
+						if (x.name == requestName) {
+							x.message(str.format("<color=cyan>{0} has accepted your order and is on the way!</color>", player.name));
+						}
+					}
 				}
 				else {
 					logger.log("acceptOrder - requestaccepted returned something different than 'False'");
@@ -62,7 +71,29 @@ command orderTaxi() {
 
 				player.message(str.format("<color=yellow>You have ordered a Taxi!</color>"));
 				database.execute("INSERT INTO taxiRequest (requestName, requestLocation) VALUES ('" + playerName + "', '" + saveToDBPos + "');");
+				logger.log("PLEASE CHANGE THE AUTO DELETE IN orderTaxi()! ITS HARDCODED ATM");
+				wait.seconds(30, database.execute("UPDATE taxiRequest SET accepted ='1' WHERE requestName = '" + playerName + "' AND accepted = '0';"));
 			}
+		}
+		else {
+			//can make a new order.
+			ResultArray = Result[0];
+			requestID = ResultArray[0];
+			requestName = ResultArray[1];
+			requestLocation = ResultArray[2];
+			requestaccepted = ResultArray[3];
+
+			foreach(x in server.players) {
+				//if (taxi.hasPermission("taxiDriver")) { taxi.message(player.name + " has called a taxi. Destination: " + reason + ". Accept this job? /accept"); }
+				if (x.hasPermission("taxi.job")) { //change that to permissions once created.
+					x.message(str.format("<color=yellow>A new order has been made!</color>", player.name));
+				}
+			}
+
+			player.message(str.format("<color=yellow>You have ordered a Taxi!</color>"));
+			database.execute("INSERT INTO taxiRequest (requestName, requestLocation) VALUES ('" + playerName + "', '" + saveToDBPos + "');");
+			logger.log("PLEASE CHANGE THE AUTO DELETE IN orderTaxi()! ITS HARDCODED ATM");
+			wait.seconds(30, database.execute("UPDATE taxiRequest SET accepted ='1' WHERE requestName = '" + playerName + "' AND accepted = '0';"));
 		}
 	}
 }

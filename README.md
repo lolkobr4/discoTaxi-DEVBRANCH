@@ -32,12 +32,15 @@ Taxi system with chat based functions. Connected with a Database, designed for u
 	people need to "apply"										- DONE + TESTED
 	onplayerconnect get taxidriver permission with DB check		- DONE
 	Taxi request list											- DONE
-	Basic help cmd												- PARTIAL
+	Basic help cmd												- PARTIAL 
 	order a taxi												- DONE
-	message requester if taxi is  coming						- DONE
+	message requester if taxi is coming							- DONE
 	cancel an order
+			- TBD 
+	check why everyone can read "new order has been made"
 	delete an order after X secs								- DONE
-	end an order when job is done.
+	end an order when job is done. (+jobDone)
+	ondisconnect delete entry on db // set accepted to 1.
 
 	Accept as driver + createMarker								- PARTIAL
 	cant create a marker. Doesnt even work with player.position
@@ -55,9 +58,6 @@ Taxi system with chat based functions. Connected with a Database, designed for u
 # Chat / Notes
 
 	---------------------- Notes box ----------------------
-	Please check  in orderTaxi if the position will be saved correctly
-	as 13,3,7 or if it throws an error. Wasnt sure if uScript detects it as a string.
-	in (line 92)
 
 	Ran the file on my server, no syntax errors so far. Haven't tried each command
 	individually, though.
@@ -66,5 +66,6 @@ Taxi system with chat based functions. Connected with a Database, designed for u
 
 	---------------------- Chat box ----------------------
 
+	
 
 	------------------------------------------------------
