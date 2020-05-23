@@ -1,6 +1,43 @@
 /////////////////////////////////////////////////////////////////////////////////////////
-// EVERYTHING RELATED TO TAXI ORDERS
+// Simple Taxi Plugin with a Jobs/Duty function. Connected with a Database, designed for uScript for Unturned 3.
+// Created by thekobr4 (thekobr4#4534) and Tawtis (Tawtis#9000), part of DiscoScripts.
+// Make sure to join my Discord to get free Plugins and Scripts, not allowed on uScript that are too similar to the plugins on ImperialPlugins.
+// Join here: https://discord.gg/nm6pjgX
 /////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////
+// Codeusage:
+//		Commands for TaxiDrivers:
+//			/TaxiRequests				Lists all Taxi orders
+//			/acceptOrder *ID* 
+//		Become a TaxiDriver or quit you job as one:
+//			/joinTaxi					To get the job
+//			/quitTaxi					To quit the job
+//
+//		Players:
+//			/orderTaxi					Orders a Taxi
+//			/cancelTaxi					Cancels your order.
+//			/TaxiHelp
+//////////////////////////////
+// Examples:
+//      /acceptOrder 5					Accepts order 5.
+//      /joinTaxi						Gets you a job as Taxi Driver.
+//////////////////////////////
+//////////////////////////////
+// Permissions:
+//      garagePlug.save
+//      garagePlug.get
+//      garagePlug.list
+//      garagePlug.setLocation			Should be usable by an Admin !ONLY!
+//////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+// CHANGE YOUR SETTINGS HERE
+deleteDelay = 60;						// Delay until a order gets deleted if no one accepts it.
+/////////////////////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////
+//EVERYTHING RELATED TO TAXI ORDERS//
+/////////////////////////////////////
 command acceptOrder(requestID) {
 	execute() {
 		if (isSet(requestID)) {
@@ -36,7 +73,23 @@ command acceptOrder(requestID) {
 	}
 }
 
-command orderTaxi() {
+command taxiCancel() {
+	execute() {
+		playerID = player.id;
+		playerName = player.name;
+		Result = database.execute("SELECT * FROM taxiRequest WHERE requestName = '" + playerName + "' AND accepted = 0;");
+
+		if (Result.count != 0) {
+			database.execute("UPDATE taxiRequest SET accepted ='1' WHERE requestName = '" + playerName + "' AND accepted = '0';");
+			player.message(str.format("<color=cyan>Your Taxi Order has been cancelled.</color>"));
+		}
+		else {
+			player.message(str.format("<color=cyan>You haven't ordered a Taxi or it has already been accepted.</color>"));
+		}
+	}
+}
+
+command TaxiOrder() {
 	//permission = "taxi.call";
 	execute() {
 
@@ -132,8 +185,12 @@ command taxiRequests() {
 			// maybe we could use the requset position to get the nearest location in the loop
 			// so the taxidriver gets that message:
 			// Request #1 by Radona near Pudget Sound.
-
-			player.message(str.format("<color=cyan>Request #{0} by {1}</color>", requestID, requestName));
+			foreach(x in server.players) {
+				if (x.name == requestName) {
+					searchedPlayer = x;
+				};
+			};
+			player.message(str.format("<color=cyan>Order #{0} by {1} near {2}.</color>", requestID, requestName, getNearestLocation(searchedPlayer)));
 
 			// Need to edit that with nearest location.
 			//player.message(str.format("<color=cyan>Request #{0} by {1} near {2}.</color>", requestID, requestName, getNearestLocation(<vector3>)));
@@ -147,7 +204,7 @@ command taxiRequests() {
 /////////////////////////////////////////////////////////////////////////////////////////
 // EVERYTHING RELATED TO GETTING OR QUITTING THE JOB
 /////////////////////////////////////////////////////////////////////////////////////////
-command joinTaxi() {
+command TaxiJoin() {
 	permission = "taxi.job";
 	execute() {
 		playerID = player.id;
@@ -183,7 +240,7 @@ command applyconfirm() {
 	}
 }
 
-command quitTaxi() {
+command TaxiQuit() {
 	permission = "taxi.job";
 	execute() {
 		playerID = player.id;
@@ -230,11 +287,19 @@ event onPlayerJoined(player) {
 
 event onPlayerQuit(player) {
 	playerID = player.id;
+	playerName = player.name;
+
 	Result = database.execute("SELECT * FROM taxiDriver WHERE steamID64 = '" + playerID + "';");
+	ResultOrders = database.execute("SELECT * FROM taxiDriver WHERE steamID64 = '" + playerID + "';");
+
+	if (ResultOrder.count != 0) {
+		database.execute("UPDATE taxiRequest SET accepted='1' WHERE requestName = '" + playerName + "' AND accepted = 0;");
+	};
+
 
 	if (Result.count != 0) {
 		player.removeGroup("TaxiDriver"); //to avoid errors if groups persist.
-	}
+	};
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 // EVERYTHING RELATED TO GETTING OR QUITTING THE JOB END

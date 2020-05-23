@@ -28,29 +28,27 @@ Taxi system with chat based functions. Connected with a Database, designed for u
 		(Using taxi.job everywhere it fits. cn be changed.)
 
 # Code based:
-	disco (https://www.youtube.com/watch?v=G_H0rJj1gJc)
-	people need to "apply"										- DONE + TESTED
+	people need to "apply"										- DONE
 	onplayerconnect get taxidriver permission with DB check		- DONE
 	Taxi request list											- DONE
 	Basic help cmd												- PARTIAL 
 	order a taxi												- DONE
 	message requester if taxi is coming							- DONE
-	cancel an order
-			- TBD 
+	cancel an order												- DONE
 	check why everyone can read "new order has been made"
 	delete an order after X secs								- DONE
 	end an order when job is done. (+jobDone)
-	ondisconnect delete entry on db // set accepted to 1.
+	ondisconnect delete entry on db // set accepted to 1.		- DONE
 
 	Accept as driver + createMarker								- PARTIAL
-	cant create a marker. Doesnt even work with player.position
+	(cant create a marker. Doesnt even work with player.position)
 
-	discord whook
+	
 	setup taxiDriver Permission (see above)
-	driver <-> customer // private chat (could be unnecessary)
 
 	create a variable to delete order after X seconds instead
-	of hardcoding it
+	of hardcoding it											- DONE
+	create function to message the player that it got deleted
 
 # Other
 	Create Example Permission Setup for TaxiDriver in XML
@@ -58,14 +56,12 @@ Taxi system with chat based functions. Connected with a Database, designed for u
 # Chat / Notes
 
 	---------------------- Notes box ----------------------
-
-	Ran the file on my server, no syntax errors so far. Haven't tried each command
-	individually, though.
-
+	Added a location at "Order #1 by Radona near" in TaxiRequests
 	------------------------------------------------------
 
 	---------------------- Chat box ----------------------
 
-	
-
+	sure thing
+	keep me updated if you decide to keep writing more stuff. ill try to think of some more easier scripts
+	kk
 	------------------------------------------------------
